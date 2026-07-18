@@ -1,0 +1,14 @@
+flour:
+  recipe: one
+  name: flour
+  quantity: 2 cups
+
+banana:
+  recipe: one
+  name: ripe bananas
+  quantity: "3"
+
+tomatoes:
+  recipe: two
+  name: crushed tomatoes
+  quantity: 28 oz

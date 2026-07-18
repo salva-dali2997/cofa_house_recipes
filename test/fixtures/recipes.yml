@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Banana Bread
+  instructions: |
+    Preheat the oven to 350°F.
+    Mix the dry ingredients, then fold in the wet ingredients.
+    Bake for 60 minutes.
+  user: one
+
+two:
+  name: Tomato Soup
+  instructions: |
+    Saute the onions and garlic.
+    Add the tomatoes and simmer for 20 minutes.
+    Blend until smooth.
+  user: two

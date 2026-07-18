@@ -1,0 +1,8 @@
+<div class="ingredient-fields" data-nested-form-target="item">
+  <%= form.text_field :quantity, placeholder: "2 cups", class: "quantity" %>
+  <%= form.text_field :name, placeholder: "flour", class: "ingredient-name" %>
+  <% if form.object.persisted? %>
+    <%= form.hidden_field :_destroy %>
+  <% end %>
+  <button type="button" class="remove-link" data-action="nested-form#remove">Remove</button>
+</div>

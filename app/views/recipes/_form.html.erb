@@ -1,0 +1,44 @@
+<%= form_with model: @recipe, data: { controller: "nested-form" } do |form| %>
+  <% if form.object.errors.any? %>
+    <div class="flash flash-alert">
+      <p><%= pluralize(form.object.errors.count, "error") %> prevented this recipe from saving:</p>
+      <ul>
+        <% form.object.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name, "Recipe name" %>
+    <%= form.text_field :name, placeholder: "Grandma's banana bread", autofocus: true %>
+  </div>
+
+  <fieldset>
+    <legend>Ingredients</legend>
+
+    <div data-nested-form-target="container">
+      <%= form.fields_for :ingredients do |ingredient_form| %>
+        <%= render "ingredient_fields", form: ingredient_form %>
+      <% end %>
+    </div>
+
+    <template data-nested-form-target="template">
+      <%= form.fields_for :ingredients, Ingredient.new, child_index: "NEW_RECORD" do |ingredient_form| %>
+        <%= render "ingredient_fields", form: ingredient_form %>
+      <% end %>
+    </template>
+
+    <button type="button" class="button-secondary" data-action="nested-form#add">Add ingredient</button>
+  </fieldset>
+
+  <div class="field">
+    <%= form.label :instructions %>
+    <%= form.text_area :instructions, rows: 8, placeholder: "1. Preheat the oven to 350°F.\n2. Mix the dry ingredients..." %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit @recipe.new_record? ? "Save recipe" : "Update recipe" %>
+  </div>
+<% end %>

@@ -1,0 +1,62 @@
+<% content_for :title, @recipe.name %>
+
+<article class="recipe">
+  <header class="recipe-header">
+    <h1><%= @recipe.name %></h1>
+  </header>
+
+  <section class="ingredients">
+    <h2>Ingredients</h2>
+    <ul>
+      <% @recipe.ingredients.each do |ingredient| %>
+        <li><span class="quantity"><%= ingredient.quantity %></span> <%= ingredient.name %></li>
+      <% end %>
+    </ul>
+  </section>
+
+  <section class="instructions">
+    <h2>Instructions</h2>
+    <%= simple_format @recipe.instructions %>
+  </section>
+
+  <% if authenticated? && @recipe.user == Current.user %>
+    <div class="actions">
+      <%= link_to "Edit", edit_recipe_path(@recipe), class: "button-secondary" %>
+      <%= button_to "Delete", @recipe, method: :delete, data: { turbo_confirm: "Delete this recipe?" }, class: "button-danger" %>
+    </div>
+  <% end %>
+</article>
+
+<section class="feedback">
+  <h2>Feedback</h2>
+
+  <%= form_with model: @feedback, url: recipe_feedbacks_path(@recipe), class: "feedback-form" do |form| %>
+    <% if @feedback.errors.any? %>
+      <div class="flash flash-alert"><%= @feedback.errors.full_messages.to_sentence %></div>
+    <% end %>
+    <div class="field">
+      <%= form.label :name, "Name (optional)" %>
+      <%= form.text_field :name, placeholder: "Anonymous" %>
+    </div>
+    <div class="field">
+      <%= form.label :comment, "Your feedback" %>
+      <%= form.text_area :comment, rows: 3 %>
+    </div>
+    <%= form.submit "Share feedback" %>
+  <% end %>
+
+  <% if @recipe.feedbacks.any? %>
+    <ul class="feedback-list">
+      <% @recipe.feedbacks.each do |feedback| %>
+        <li>
+          <p class="feedback-name"><%= feedback.name.presence || "Anonymous" %></p>
+          <p class="feedback-comment"><%= feedback.comment %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="empty-state">No feedback yet.</p>
+  <% end %>
+</section>
+
+<%= link_to "← Back to all recipes", recipes_path, class: "link-muted" %>

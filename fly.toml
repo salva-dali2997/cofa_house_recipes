@@ -1,0 +1,33 @@
+# fly.toml app configuration file
+# See https://fly.io/docs/reference/configuration/ for details.
+#
+# Change `app` to the name you chose with `fly apps create`, and
+# `primary_region` to whichever region is closest to you.
+
+app = "cofa-house-recipes"
+primary_region = "iad"
+
+[build]
+
+[env]
+  RAILS_LOG_TO_STDOUT = "true"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+# SQLite lives on this volume, so keep the app pinned to a single machine
+# (`fly scale count 1`) — multiple machines would each need their own copy
+# of the database.
+[[mounts]]
+  source = "cofa_house_recipes_data"
+  destination = "/rails/storage"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1

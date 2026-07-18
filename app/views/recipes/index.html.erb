@@ -1,0 +1,18 @@
+<% content_for :title, "Recipes" %>
+
+<div class="page-header">
+  <h1>Recipes</h1>
+  <%= link_to "New recipe", new_recipe_path, class: "button" if authenticated? %>
+</div>
+
+<% if @recipes.any? %>
+  <ul class="recipe-list">
+    <% @recipes.each do |recipe| %>
+      <li>
+        <%= link_to recipe.name, recipe_path(recipe) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="empty-state">No recipes yet.</p>
+<% end %>
