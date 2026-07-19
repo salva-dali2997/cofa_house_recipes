@@ -33,8 +33,8 @@ One-time setup:
 
 ```
 fly apps create cofa-house-recipes   # or edit the app name in fly.toml first
-fly volumes create cofa_house_recipes_data --size 1 --region iad
-fly secrets set RAILS_MASTER_KEY=$(cat config/master.key)
+fly volumes create cofa_house_recipes_data --size 1 --region iad -a cofa-house-recipes
+fly secrets set RAILS_MASTER_KEY=$(cat config/master.key) -a cofa-house-recipes
 ```
 
 Then add a `FLY_API_TOKEN` secret to the GitHub repo (Settings → Secrets and
