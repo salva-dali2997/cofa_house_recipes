@@ -16,6 +16,11 @@ module CofaHouseRecipes
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # This app doesn't use file uploads, so there's no image_processing gem to
+    # generate ActiveStorage variants with. Disable the variant processor to
+    # silence its boot-time warning.
+    config.active_storage.variant_processor = :disabled
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
