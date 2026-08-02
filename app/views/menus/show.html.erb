@@ -1,0 +1,23 @@
+<% content_for :title, @menu ? @menu.title : "Today's Menu" %>
+
+<% if @menu %>
+  <div class="page-header">
+    <h1><%= @menu.title %></h1>
+    <%= link_to "Plan a menu", new_menu_path, class: "button" if authenticated? %>
+  </div>
+
+  <ul class="recipe-list">
+    <% @menu.recipes.each do |recipe| %>
+      <li>
+        <%= link_to recipe.name, recipe_path(recipe) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <div class="page-header">
+    <h1>Today's Menu</h1>
+    <%= link_to "Plan a menu", new_menu_path, class: "button" if authenticated? %>
+  </div>
+
+  <p class="empty-state">Nothing on the menu right now.</p>
+<% end %>

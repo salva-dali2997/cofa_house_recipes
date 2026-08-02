@@ -1,0 +1,39 @@
+name: Fly - Restore auto-stop (1st & 3rd Sunday, 9pm ET)
+
+# 21:00 ET rolls into the next UTC day, so day-of-week here is Monday (1)
+# even though it corresponds to Sunday evening in America/New_York.
+on:
+  schedule:
+    - cron: "0 1 * * 1" # 21:00 EDT Sunday (UTC-4)
+    - cron: "0 2 * * 1" # 21:00 EST Sunday (UTC-5)
+  workflow_dispatch:
+
+jobs:
+  restore-autostop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check it's the 1st or 3rd Sunday at 9pm ET
+        id: check
+        run: |
+          hour=$(TZ=America/New_York date +%H)
+          dow=$(TZ=America/New_York date +%u)
+          dom=$(TZ=America/New_York date +%d)
+          run=false
+          if [ "$dow" = "7" ] && [ "$hour" = "21" ]; then
+            if { [ "$dom" -ge 1 ] && [ "$dom" -le 7 ]; } || { [ "$dom" -ge 15 ] && [ "$dom" -le 21 ]; }; then
+              run=true
+            fi
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+
+      - name: Set up flyctl
+        if: steps.check.outputs.run == 'true'
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Restore auto-stop
+        if: steps.check.outputs.run == 'true'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          MACHINE_ID=$(flyctl machines list --json -a cofa-house-recipes | jq -r '.[0].id')
+          flyctl machine update "$MACHINE_ID" -a cofa-house-recipes --autostop=stop -y

@@ -17,4 +17,7 @@ Rails.application.routes.draw do
   resources :recipes do
     resources :feedbacks, only: %i[ create ]
   end
+
+  get "today", to: "menus#show", as: :today_menu
+  resources :menus, only: %i[ new create ]
 end

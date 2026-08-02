@@ -58,8 +58,10 @@ a:hover {
 
 .site-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem 1rem;
   padding: 1rem 1.25rem;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
@@ -194,6 +196,7 @@ button:not(.remove-link):not(.link-button):hover {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
 textarea {
   width: 100%;
   padding: 0.6rem 0.75rem;
@@ -232,6 +235,18 @@ legend {
   display: flex;
   gap: 0.75rem;
   margin-top: 1.25rem;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.checkbox-field input {
+  width: auto;
 }
 
 .auth-form {

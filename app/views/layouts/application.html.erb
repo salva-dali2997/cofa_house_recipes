@@ -24,6 +24,7 @@
   <body>
     <nav class="site-nav">
       <%= link_to "Cofa House Recipes", root_path, class: "site-title" %>
+      <%= link_to "Today's Menu", today_menu_path %>
       <% if authenticated? %>
         <%= button_to "Log out", session_path, method: :delete, class: "link-button" %>
       <% else %>
