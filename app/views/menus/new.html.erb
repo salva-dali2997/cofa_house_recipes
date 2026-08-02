@@ -2,7 +2,7 @@
 
 <h1>Plan a menu</h1>
 
-<%= form_with model: @menu, url: menus_path do |form| %>
+<%= form_with model: @menu, url: menus_path, method: :post do |form| %>
   <% if form.object.errors.any? %>
     <div class="flash flash-alert">
       <p><%= pluralize(form.object.errors.count, "error") %> prevented this menu from saving:</p>

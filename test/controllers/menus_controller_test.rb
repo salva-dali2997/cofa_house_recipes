@@ -33,6 +33,17 @@ class MenusControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_session_path
   end
 
+  test "new form always posts, even when today's menu already exists" do
+    sign_in_as @user
+    Menu.create!(date: Date.current).recipe_ids = [ @recipe.id ]
+
+    get new_menu_path
+    assert_response :success
+    assert_select "form[action=?][method=?]", menus_path, "post" do
+      assert_select "input[name=?]", "_method", count: 0
+    end
+  end
+
   test "create requires authentication" do
     assert_no_difference "Menu.count" do
       post menus_path, params: { menu: { date: "2026-08-02", recipe_ids: [ @recipe.id ] } }
